@@ -28,5 +28,6 @@ jobs:
       - uses: ./
         with:
           token: '${{ github.token }}'
+          ACTIONS_RUNNER_DEBUG: 'true'
 
         
