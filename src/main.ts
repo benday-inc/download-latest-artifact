@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
 import axios from 'axios'
+import {ArtifactsResponse} from './ArtifactsResponse'
 
 async function run(): Promise<void> {
   try {
@@ -18,7 +19,7 @@ async function run(): Promise<void> {
           Authorization: `token ${token}`
         }
       })
-      .get<string>(
+      .get<ArtifactsResponse>(
         'https://api.github.com/repos/benday/actionsdemo/actions/artifacts'
       )
 
@@ -26,7 +27,11 @@ async function run(): Promise<void> {
 
     core.debug('called api')
 
-    core.debug(data)
+    if (!data) {
+      core.debug('data is undefined')
+    } else {
+      core.debug(`data artifact count: ${data.artifacts.length}`)
+    }
   } catch (error) {
     core.setFailed(error.message)
   }

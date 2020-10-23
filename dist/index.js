@@ -534,7 +534,12 @@ function run() {
                 .get('https://api.github.com/repos/benday/actionsdemo/actions/artifacts');
             const data = (yield temp).data;
             core.debug('called api');
-            core.debug(data);
+            if (!data) {
+                core.debug('data is undefined');
+            }
+            else {
+                core.debug(`data artifact count: ${data.artifacts.length}`);
+            }
         }
         catch (error) {
             core.setFailed(error.message);
