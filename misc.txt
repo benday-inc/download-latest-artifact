@@ -1,0 +1,15 @@
+To test...
+
+npm run-script build
+npm test
+
+To publish...
+npm run build
+npm run package
+
+Or...
+npm run all
+
+Create a tag that can be published to the marketplace...
+git tag -a -m "create a tag" v1
+git push --follow-tags
