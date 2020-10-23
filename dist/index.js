@@ -518,6 +518,7 @@ const core = __importStar(__webpack_require__(186));
 const axios_1 = __importDefault(__webpack_require__(545));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
+        let response = null;
         try {
             // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
             core.debug(`Reading inputs...`);
@@ -532,17 +533,20 @@ function run() {
                 }
             })
                 .get('https://api.github.com/repos/benday/actionsdemo/actions/artifacts');
-            const data = (yield temp).data;
+            response = yield temp;
             core.debug('called api');
-            if (!data) {
+            if (!response.data) {
                 core.debug('data is undefined');
             }
             else {
-                core.debug(`data artifact count: ${data.artifacts.length}`);
+                core.debug(`data artifact count: ${response.data.artifacts.length}`);
             }
         }
         catch (error) {
-            core.setFailed(error.message);
+            core.error('boom?');
+            core.error(JSON.stringify(error));
+            core.error(JSON.stringify(response));
+            core.setFailed(JSON.stringify(error));
         }
     });
 }

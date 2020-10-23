@@ -1,8 +1,10 @@
 import * as core from '@actions/core'
-import axios from 'axios'
+import axios, {AxiosResponse} from 'axios'
 import {ArtifactsResponse} from './ArtifactsResponse'
 
 async function run(): Promise<void> {
+  let response: AxiosResponse<ArtifactsResponse> = null
+
   try {
     // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
     core.debug(`Reading inputs...`)
@@ -23,18 +25,19 @@ async function run(): Promise<void> {
         'https://api.github.com/repos/benday/actionsdemo/actions/artifacts'
       )
 
-    const data = (await temp).data
+    response = await temp
 
     core.debug('called api')
 
-    if (!data) {
+    if (!response.data) {
       core.debug('data is undefined')
     } else {
-      core.debug(`data artifact count: ${data.artifacts.length}`)
+      core.debug(`data artifact count: ${response.data.artifacts.length}`)
     }
   } catch (error) {
     core.error('boom?')
     core.error(JSON.stringify(error))
+    core.error(JSON.stringify(response))
     core.setFailed(JSON.stringify(error))
   }
 }
