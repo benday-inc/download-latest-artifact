@@ -25,6 +25,6 @@ jobs:
         working-directory: '${{ github.workspace }}'
       - uses: ./
         with:
-          token: '${{ github.workspace }}'
+          token: '${{ github.token }}'
 
         
