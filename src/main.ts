@@ -12,6 +12,8 @@ async function run(): Promise<void> {
     const token: string = core.getInput('token')
     core.debug(`Token: ${token} ...`)
 
+    core.debug(`Token length: ${token.length} ...`)
+
     core.debug('calling api')
 
     const temp = axios
