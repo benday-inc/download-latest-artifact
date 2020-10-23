@@ -8,6 +8,7 @@ on: # rebuild any PRs and main branch changes
       - 'releases/*'
 env:
   ACTIONS_RUNNER_DEBUG: true
+  MYGITHUBTOKEN: '${{ github.token }}'
 
 jobs:
   build: # make sure build/ci work properly
