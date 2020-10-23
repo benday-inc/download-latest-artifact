@@ -7,6 +7,7 @@ async function run(): Promise<void> {
 
   try {
     // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
+    core.debug(`Starting...`)
     core.debug(`Reading inputs...`)
 
     const token: string = core.getInput('token')
