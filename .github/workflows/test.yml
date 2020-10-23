@@ -7,7 +7,7 @@ on: # rebuild any PRs and main branch changes
       - master
       - 'releases/*'
 env:
-  ACTIONS_RUNNER_DEBUG: 'true'
+  ACTIONS_RUNNER_DEBUG: true
 
 jobs:
   build: # make sure build/ci work properly
@@ -28,6 +28,5 @@ jobs:
       - uses: ./
         with:
           token: '${{ github.token }}'
-          ACTIONS_RUNNER_DEBUG: 'true'
 
         
