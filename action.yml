@@ -1,19 +1,11 @@
-name: 'Edit .net core database connection string in appsettings.json'
-description: 'Edit a connection string for .NET Core in appsettings.json'
+name: 'Download artifact from a github build'
+description: 'Download artifact from a github build'
 author: 'Benjamin Day Consulting, Inc.'
 inputs:
-  name:
+  token:
     required: true
-    description: 'name of the connection string'
+    description: 'token for accessing github api'
     default: 'default'
-  connectionString:
-    required: true
-    description: 'value for the connection string'
-    default: ''
-  pathToSettingsFile:
-    required: true
-    description: 'path to your appsettings.json file'
-    default: 'appsettings.json'
 runs:
   using: 'node12'
   main: 'dist/index.js'

@@ -1,38 +1,32 @@
 import * as core from '@actions/core'
-import {JsonEditor} from './JsonEditor'
+import axios from 'axios'
 
 async function run(): Promise<void> {
   try {
     // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
-
     core.debug(`Reading inputs...`)
 
-    const name: string = core.getInput('name')
-    core.debug(`Connection string name: ${name} ...`)
+    const token: string = core.getInput('token')
+    core.debug(`Token: ${token} ...`)
 
-    const pathToSettingsFile: string = core.getInput(
-      'PATHTOSETTINGSFILE'.toLowerCase()
-    )
-    core.debug(`Settings file: ${pathToSettingsFile} ...`)
+    core.debug('calling api')
 
-    const connStringValue: string = core.getInput('connectionstring')
-    core.debug(`Connection string value: ${connStringValue} ...`)
+    const temp = axios
+      .create({
+        responseType: 'json',
+        headers: {
+          Authorization: `token ${token}`
+        }
+      })
+      .get<string>(
+        'https://api.github.com/repos/benday/actionsdemo/actions/artifacts'
+      )
 
-    core.debug('Creating instance of json editor...')
-    const editor = new JsonEditor()
-    core.debug('Json editor created.')
+    const data = (await temp).data
 
-    core.debug('Opening file...')
-    editor.open(pathToSettingsFile)
-    core.debug('File opened.')
+    core.debug('called api')
 
-    core.debug('Setting connection string value...')
-    editor.setConnectionString(name, connStringValue)
-    core.debug('Connection string value set.')
-
-    core.debug('Saving changes...')
-    editor.save(pathToSettingsFile)
-    core.debug('Changes saved.')
+    core.debug(data)
   } catch (error) {
     core.setFailed(error.message)
   }
