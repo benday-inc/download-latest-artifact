@@ -33,7 +33,7 @@ async function run(): Promise<void> {
       core.debug(`data artifact count: ${data.artifacts.length}`)
     }
   } catch (error) {
-    core.setFailed(error.message)
+    core.setFailed(error)
   }
 }
 
