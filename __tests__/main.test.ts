@@ -1,5 +1,4 @@
-// import * as process from 'process'
-import * as cp from 'child_process'
+import * as sut from 'child_process'
 import * as path from 'path'
 import * as fs from 'fs'
 import {JsonEditor} from '../src/JsonEditor'
@@ -18,12 +17,17 @@ test('make call to api', () => {
   process.env['INPUT_TOKEN'] = token
 
   process.env['ACTIONS_RUNNER_DEBUG'] = 'true'
+  process.env['RUNNER_DEBUG'] = '1'
 
   const systemUnderTest = path.join(__dirname, '..', 'lib', 'main.js')
-  const options: cp.ExecSyncOptions = {
-    env: process.env
+  // const systemUnderTest = path.join(__dirname, '..', 'src', 'main.ts')
+  const options: sut.ExecSyncOptions = {
+    env: process.env,
+    stdio: [process.stdin, process.stdout, process.stderr]
   }
 
-  let temp = cp.execSync(`node ${systemUnderTest}`, options).toString()
-  console.log(temp)
+  // let temp = sut.execSync(`node ${systemUnderTest}`, options).toString()
+  // console.log(temp)
+
+  sut.execSync(`node ${systemUnderTest}`, options)
 })

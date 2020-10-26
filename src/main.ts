@@ -1,26 +1,35 @@
 import * as core from '@actions/core'
 import axios, {AxiosResponse} from 'axios'
+// import * as Console from 'console'
 import {ArtifactsResponse} from './ArtifactsResponse'
-// import * as axiosLogging from 'axios-debug-log'
+
+function writeDebug(message: string): void {
+  // Console.debug(message)
+  core.debug(message)
+}
 
 async function run(): Promise<void> {
   let response: AxiosResponse<ArtifactsResponse> = null
 
   try {
     // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
-    core.debug(`Starting...`)
-    core.debug(`Reading inputs...`)
+    writeDebug(`Starting...`)
+    writeDebug(`Reading inputs...`)
+
+    const isDebug = core.isDebug()
+
+    writeDebug(`isdebug: ${isDebug}`)
 
     const token: string = core.getInput('token')
 
     if (!token || token === null || token.length === 0 || token === 'default') {
       core.error('GitHub token was not set or was empty.')
     } else {
-      core.debug(`Token: ${token} ...`)
+      writeDebug(`Token: ${token} ...`)
 
-      core.debug(`Token length: ${token.length} ...`)
+      writeDebug(`Token length: ${token.length} ...`)
 
-      core.debug('calling api')
+      writeDebug('setting up api call')
 
       const githubClient = axios.create({
         baseURL: 'https://api.github.com/',
@@ -31,10 +40,21 @@ async function run(): Promise<void> {
       })
 
       githubClient.interceptors.request.use(x => {
-        core.debug('axios log...')
-        core.debug(JSON.stringify(x))
+        writeDebug('axios request log...')
+        writeDebug(JSON.stringify(x))
         return x
       })
+
+      githubClient.interceptors.response.use(x => {
+        writeDebug('axios response log...')
+
+        const msg = `${x.status} | ${JSON.stringify(x.data)}`
+
+        writeDebug(msg)
+        return x
+      })
+
+      writeDebug('calling api')
 
       const temp = githubClient.get<ArtifactsResponse>(
         'repos/benday/actionsdemo/actions/artifacts'
@@ -42,18 +62,19 @@ async function run(): Promise<void> {
 
       response = await temp
 
-      core.debug('called api')
+      writeDebug('called api')
 
-      if (!response.data) {
-        core.debug('data is undefined')
+      if (!response) {
+        core.setFailed('Response from api call was null')
+      } else if (!response.data) {
+        writeDebug('Response data is undefined')
       } else {
-        core.debug(`data artifact count: ${response.data.artifacts.length}`)
+        writeDebug(`data artifact count: ${response.data.artifacts.length}`)
       }
     }
   } catch (error) {
     core.error('boom?')
     core.error(JSON.stringify(error))
-    core.error(JSON.stringify(response))
     core.setFailed(JSON.stringify(error))
   }
 }

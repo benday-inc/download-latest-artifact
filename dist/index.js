@@ -516,22 +516,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(186));
 const axios_1 = __importDefault(__webpack_require__(545));
-// import * as axiosLogging from 'axios-debug-log'
+function writeDebug(message) {
+    // Console.debug(message)
+    core.debug(message);
+}
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         let response = null;
         try {
             // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
-            core.debug(`Starting...`);
-            core.debug(`Reading inputs...`);
+            writeDebug(`Starting...`);
+            writeDebug(`Reading inputs...`);
+            const isDebug = core.isDebug();
+            writeDebug(`isdebug: ${isDebug}`);
             const token = core.getInput('token');
             if (!token || token === null || token.length === 0 || token === 'default') {
                 core.error('GitHub token was not set or was empty.');
             }
             else {
-                core.debug(`Token: ${token} ...`);
-                core.debug(`Token length: ${token.length} ...`);
-                core.debug('calling api');
+                writeDebug(`Token: ${token} ...`);
+                writeDebug(`Token length: ${token.length} ...`);
+                writeDebug('setting up api call');
                 const githubClient = axios_1.default.create({
                     baseURL: 'https://api.github.com/',
                     responseType: 'json',
@@ -540,25 +545,34 @@ function run() {
                     }
                 });
                 githubClient.interceptors.request.use(x => {
-                    core.debug('axios log...');
-                    core.debug(JSON.stringify(x));
+                    writeDebug('axios request log...');
+                    writeDebug(JSON.stringify(x));
                     return x;
                 });
+                githubClient.interceptors.response.use(x => {
+                    writeDebug('axios response log...');
+                    const msg = `${x.status} | ${JSON.stringify(x.data)}`;
+                    writeDebug(msg);
+                    return x;
+                });
+                writeDebug('calling api');
                 const temp = githubClient.get('repos/benday/actionsdemo/actions/artifacts');
                 response = yield temp;
-                core.debug('called api');
-                if (!response.data) {
-                    core.debug('data is undefined');
+                writeDebug('called api');
+                if (!response) {
+                    core.setFailed('Response from api call was null');
+                }
+                else if (!response.data) {
+                    writeDebug('Response data is undefined');
                 }
                 else {
-                    core.debug(`data artifact count: ${response.data.artifacts.length}`);
+                    writeDebug(`data artifact count: ${response.data.artifacts.length}`);
                 }
             }
         }
         catch (error) {
             core.error('boom?');
             core.error(JSON.stringify(error));
-            core.error(JSON.stringify(response));
             core.setFailed(JSON.stringify(error));
         }
     });
