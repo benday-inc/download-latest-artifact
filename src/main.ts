@@ -1,6 +1,7 @@
 import * as core from '@actions/core'
 import axios, {AxiosResponse} from 'axios'
 import {ArtifactsResponse} from './ArtifactsResponse'
+// import * as axiosLogging from 'axios-debug-log'
 
 async function run(): Promise<void> {
   let response: AxiosResponse<ArtifactsResponse> = null
@@ -21,16 +22,23 @@ async function run(): Promise<void> {
 
       core.debug('calling api')
 
-      const temp = axios
-        .create({
-          responseType: 'json',
-          headers: {
-            Authorization: `token ${token}`
-          }
-        })
-        .get<ArtifactsResponse>(
-          'https://api.github.com/repos/benday/actionsdemo/actions/artifacts'
-        )
+      const githubClient = axios.create({
+        baseURL: 'https://api.github.com/',
+        responseType: 'json',
+        headers: {
+          Authorization: `token ${token}`
+        }
+      })
+
+      githubClient.interceptors.request.use(x => {
+        core.debug('axios log...')
+        core.debug(JSON.stringify(x))
+        return x
+      })
+
+      const temp = githubClient.get<ArtifactsResponse>(
+        'repos/benday/actionsdemo/actions/artifacts'
+      )
 
       response = await temp
 

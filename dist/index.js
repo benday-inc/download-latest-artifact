@@ -516,6 +516,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(186));
 const axios_1 = __importDefault(__webpack_require__(545));
+// import * as axiosLogging from 'axios-debug-log'
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         let response = null;
@@ -531,14 +532,19 @@ function run() {
                 core.debug(`Token: ${token} ...`);
                 core.debug(`Token length: ${token.length} ...`);
                 core.debug('calling api');
-                const temp = axios_1.default
-                    .create({
+                const githubClient = axios_1.default.create({
+                    baseURL: 'https://api.github.com/',
                     responseType: 'json',
                     headers: {
                         Authorization: `token ${token}`
                     }
-                })
-                    .get('https://api.github.com/repos/benday/actionsdemo/actions/artifacts');
+                });
+                githubClient.interceptors.request.use(x => {
+                    core.debug('axios log...');
+                    core.debug(JSON.stringify(x));
+                    return x;
+                });
+                const temp = githubClient.get('repos/benday/actionsdemo/actions/artifacts');
                 response = yield temp;
                 core.debug('called api');
                 if (!response.data) {
