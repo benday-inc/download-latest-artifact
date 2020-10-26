@@ -83,6 +83,6 @@ jobs:
       - uses: ./
         with:
           # token: '${{ github.token }}'
-          token: '${{ env.ACTIONS_RUNTIME_TOKEN }}'
+          token: '${{ env.MYGITHUBTOKEN }}'
 
         
