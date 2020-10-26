@@ -26,6 +26,29 @@ jobs:
   test: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest
     steps:
+      - name: print environment vars
+        run: env
+      - name: Inspect contexts
+        run: |
+          echo ""
+          echo "The github context is:"
+          echo "${{ toJson(github) }}"
+          echo ""
+          echo "The job context is:"
+          echo "${{ toJson(job) }}"
+          echo ""
+          echo "The steps context is:"
+          echo "${{ toJson(steps) }}"
+          echo ""
+          echo "The runner context is:"
+          echo "${{ toJson(runner) }}"
+          echo ""
+          echo "The strategy context is:"
+          echo "${{ toJson(strategy) }}"
+          echo ""
+          echo "The matrix context is:"
+          echo "${{ toJson(matrix) }}"
+          echo ""
       - uses: actions/checkout@v2
       - name: run an ls -l
         run: ls -lR
