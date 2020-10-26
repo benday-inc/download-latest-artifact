@@ -6,8 +6,8 @@ import {JsonEditor} from '../src/JsonEditor'
 // shows how the runner will run a javascript action with env / stdout protocol
 
 test('make call to api', () => {
-  // let token = process.env['MYGITHUBTOKEN']
-  let token = process.env['ACTIONS_RUNTIME_TOKEN']
+  let token = process.env['MYGITHUBTOKEN']
+  // let token = process.env['ACTIONS_RUNTIME_TOKEN']
 
   expect(token).toBeDefined()
   expect(token).not.toBeNull()
