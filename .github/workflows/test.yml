@@ -10,8 +10,8 @@ on: # rebuild any PRs and main branch changes
 env:
   ACTIONS_RUNNER_DEBUG: true
   # MYGITHUBTOKEN: '${{ github.token }}'
-  # MYGITHUBTOKEN: '${{ secrets.GITHUB_TOKEN }}'
-  MYGITHUBTOKEN: '${{ env.ACTIONS_RUNTIME_TOKEN }}'  
+  MYGITHUBTOKEN: '${{ secrets.GITHUB_TOKEN }}'
+  # MYGITHUBTOKEN: '${{ env.ACTIONS_RUNTIME_TOKEN }}'  
   DEBUG: 'axios'
 
 jobs:
@@ -33,6 +33,6 @@ jobs:
       - uses: ./
         with:
           # token: '${{ github.token }}'
-          token: '${{ env.MYGITHUBTOKEN }}'
+          token: '${{ env.ACTIONS_RUNTIME_TOKEN }}'
 
         
