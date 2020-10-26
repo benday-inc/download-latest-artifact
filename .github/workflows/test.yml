@@ -9,7 +9,8 @@ on: # rebuild any PRs and main branch changes
       - 'releases/*'
 env:
   ACTIONS_RUNNER_DEBUG: true
-  MYGITHUBTOKEN: '${{ github.token }}'
+  # MYGITHUBTOKEN: '${{ github.token }}'
+  MYGITHUBTOKEN: '${{ secrets.GITHUB_TOKEN }}'
   DEBUG: 'axios'
 
 jobs:
