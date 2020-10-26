@@ -9,6 +9,10 @@ import {JsonEditor} from '../src/JsonEditor'
 test('make call to api', () => {
   let token = process.env['MYGITHUBTOKEN']
 
+  expect(token).toBeDefined()
+  expect(token).not.toBeNull()
+  expect(token.length).toBeGreaterThan(0)
+
   console.log('current token: ' + token)
 
   process.env['INPUT_TOKEN'] = token

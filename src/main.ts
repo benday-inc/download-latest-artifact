@@ -11,31 +11,36 @@ async function run(): Promise<void> {
     core.debug(`Reading inputs...`)
 
     const token: string = core.getInput('token')
-    core.debug(`Token: ${token} ...`)
 
-    core.debug(`Token length: ${token.length} ...`)
-
-    core.debug('calling api')
-
-    const temp = axios
-      .create({
-        responseType: 'json',
-        headers: {
-          Authorization: `token ${token}`
-        }
-      })
-      .get<ArtifactsResponse>(
-        'https://api.github.com/repos/benday/actionsdemo/actions/artifacts'
-      )
-
-    response = await temp
-
-    core.debug('called api')
-
-    if (!response.data) {
-      core.debug('data is undefined')
+    if (!token || token === null || token.length === 0 || token === 'default') {
+      core.error('GitHub token was not set or was empty.')
     } else {
-      core.debug(`data artifact count: ${response.data.artifacts.length}`)
+      core.debug(`Token: ${token} ...`)
+
+      core.debug(`Token length: ${token.length} ...`)
+
+      core.debug('calling api')
+
+      const temp = axios
+        .create({
+          responseType: 'json',
+          headers: {
+            Authorization: `token ${token}`
+          }
+        })
+        .get<ArtifactsResponse>(
+          'https://api.github.com/repos/benday/actionsdemo/actions/artifacts'
+        )
+
+      response = await temp
+
+      core.debug('called api')
+
+      if (!response.data) {
+        core.debug('data is undefined')
+      } else {
+        core.debug(`data artifact count: ${response.data.artifacts.length}`)
+      }
     }
   } catch (error) {
     core.error('boom?')
