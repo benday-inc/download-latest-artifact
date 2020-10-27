@@ -541,7 +541,8 @@ function run() {
                     baseURL: 'https://api.github.com/',
                     responseType: 'json',
                     headers: {
-                        Authorization: `token ${token}`
+                        Authorization: `token ${token}`,
+                        Accept: 'application/vnd.github.v3+json'
                     }
                 });
                 githubClient.interceptors.request.use(x => {
@@ -556,7 +557,7 @@ function run() {
                     return x;
                 });
                 writeDebug('calling api');
-                const temp = githubClient.get('repos/benday/actionsdemo/actions/artifacts');
+                const temp = githubClient.get('repos/benday/actionsdemo/actions/artifacts?per_page=1');
                 response = yield temp;
                 writeDebug('called api');
                 if (!response) {

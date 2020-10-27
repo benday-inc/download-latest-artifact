@@ -35,7 +35,8 @@ async function run(): Promise<void> {
         baseURL: 'https://api.github.com/',
         responseType: 'json',
         headers: {
-          Authorization: `token ${token}`
+          Authorization: `token ${token}`,
+          Accept: 'application/vnd.github.v3+json'
         }
       })
 
@@ -57,7 +58,7 @@ async function run(): Promise<void> {
       writeDebug('calling api')
 
       const temp = githubClient.get<ArtifactsResponse>(
-        'repos/benday/actionsdemo/actions/artifacts'
+        'repos/benday/actionsdemo/actions/artifacts?per_page=1'
       )
 
       response = await temp
