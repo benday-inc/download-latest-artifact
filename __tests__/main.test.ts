@@ -16,7 +16,7 @@ test('make call to api', () => {
   console.log('current token: ' + token)
 
   process.env['INPUT_TOKEN'] = token
-  process.env['INPUT_REPOSITORY_OWNER'] = 'benda'
+  process.env['INPUT_REPOSITORY_OWNER'] = 'benday'
   process.env['INPUT_REPOSITORY_NAME'] = 'actionsdemo'
   process.env['INPUT_WORKFLOW_NAME'] = '.NET Core 2'
   process.env['INPUT_BRANCH_NAME'] = 'master'
