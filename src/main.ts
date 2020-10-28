@@ -25,6 +25,7 @@ function getInputValue(key: string): string {
       )
       return null
     } else {
+      core.debug(`getInputValue(): ${key} - ${val}`)
       return val
     }
   }
@@ -40,6 +41,7 @@ async function run(): Promise<void> {
     const repositoryName = getInputValue('repository_name')
     const workflowName = getInputValue('workflow_name')
     const branchName = getInputValue('branch_name')
+    const downloadPath = getInputValue('download_path')
     const token = getInputValue('token')
 
     writeDebug('setting up api call')
@@ -62,7 +64,7 @@ async function run(): Promise<void> {
       writeDebug(`Found artifact at ${artifact.url}`)
       writeDebug(`Downloading artifact from ${artifact.archive_download_url}`)
 
-      // downloadFile(githubClient, downloadDir)
+      await downloadFile(githubClient, artifact, downloadPath)
     }
   } catch (error) {
     core.error('boom?')
@@ -72,6 +74,21 @@ async function run(): Promise<void> {
 }
 
 run()
+
+async function downloadFile(
+  client: AxiosInstance,
+  forArtifact: Artifact,
+  toDirectory: string
+): Promise<void> {
+  if (forArtifact === null) {
+    core.setFailed('downloadFile was passed a null artifact')
+    throw new Error('downloadFile was passed a null artifact')
+  }
+
+  writeDebug(
+    `downloadFile(): Downloading ${forArtifact.archive_download_url} to ${toDirectory}...`
+  )
+}
 
 async function getArtifactForWorkflowRun(
   client: AxiosInstance,

@@ -531,6 +531,7 @@ function getInputValue(key) {
             return null;
         }
         else {
+            core.debug(`getInputValue(): ${key} - ${val}`);
             return val;
         }
     }
@@ -545,6 +546,7 @@ function run() {
             const repositoryName = getInputValue('repository_name');
             const workflowName = getInputValue('workflow_name');
             const branchName = getInputValue('branch_name');
+            const downloadPath = getInputValue('download_path');
             const token = getInputValue('token');
             writeDebug('setting up api call');
             const githubClient = getClient(token, repositoryOwner, repositoryName);
@@ -558,7 +560,7 @@ function run() {
             else {
                 writeDebug(`Found artifact at ${artifact.url}`);
                 writeDebug(`Downloading artifact from ${artifact.archive_download_url}`);
-                // downloadFile(githubClient, downloadDir)
+                yield downloadFile(githubClient, artifact, downloadPath);
             }
         }
         catch (error) {
@@ -569,6 +571,15 @@ function run() {
     });
 }
 run();
+function downloadFile(client, forArtifact, toDirectory) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (forArtifact === null) {
+            core.setFailed('downloadFile was passed a null artifact');
+            throw new Error('downloadFile was passed a null artifact');
+        }
+        writeDebug(`downloadFile(): Downloading ${forArtifact.archive_download_url} to ${toDirectory}...`);
+    });
+}
 function getArtifactForWorkflowRun(client, forWorkflowRun) {
     return __awaiter(this, void 0, void 0, function* () {
         if (forWorkflowRun === null) {
