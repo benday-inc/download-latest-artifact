@@ -39,6 +39,7 @@ test('make call to api', () => {
   process.env['INPUT_WORKFLOW_NAME'] = '.NET Core 2'
   process.env['INPUT_BRANCH_NAME'] = 'master'
   process.env['INPUT_DOWNLOAD_PATH'] = pathToTempDirForThisRun
+  process.env['INPUT_DOWNLOAD_FILENAME'] = 'actionsdemo.zip'
 
   process.env['ACTIONS_RUNNER_DEBUG'] = 'true'
   process.env['RUNNER_DEBUG'] = '1'

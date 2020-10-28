@@ -44,6 +44,7 @@ async function run(): Promise<void> {
     const workflowName = getInputValue('workflow_name')
     const branchName = getInputValue('branch_name')
     const downloadPath = getInputValue('download_path')
+    const downloadFilename = getInputValue('download_filename')
     const token = getInputValue('token')
 
     writeDebug('setting up api call')
@@ -66,7 +67,7 @@ async function run(): Promise<void> {
       writeDebug(`Found artifact at ${artifact.url}`)
       writeDebug(`Downloading artifact from ${artifact.archive_download_url}`)
 
-      await downloadFile(githubClient, artifact, downloadPath, workflowName)
+      await downloadFile(githubClient, artifact, downloadPath, downloadFilename)
     }
   } catch (error) {
     core.error('boom?')
@@ -81,20 +82,19 @@ async function downloadFile(
   client: AxiosInstance,
   forArtifact: Artifact,
   toDirectory: string,
-  workflowName: string
+  toFilename: string
 ): Promise<void> {
   if (forArtifact === null) {
     core.setFailed('downloadFile was passed a null artifact')
     throw new Error('downloadFile was passed a null artifact')
   }
 
-  if (!workflowName || workflowName === null || workflowName === '') {
+  if (!toFilename || toFilename === null || toFilename === '') {
     core.setFailed('downloadFile was passed a null workflowName')
     throw new Error('downloadFile was passed a null workflowName')
   }
 
-  // const toFilePath = path.join(toDirectory, `${workflowName}.zip`)
-  const toFilePath = path.join(toDirectory, `temp.zip`)
+  const toFilePath = path.join(toDirectory, `${toFilename}`)
 
   writeDebug(
     `downloadFile(): Downloading ${forArtifact.archive_download_url} to ${toDirectory} as ${toFilePath}`

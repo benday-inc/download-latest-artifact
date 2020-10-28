@@ -549,6 +549,7 @@ function run() {
             const workflowName = getInputValue('workflow_name');
             const branchName = getInputValue('branch_name');
             const downloadPath = getInputValue('download_path');
+            const downloadFilename = getInputValue('download_filename');
             const token = getInputValue('token');
             writeDebug('setting up api call');
             const githubClient = getClient(token, repositoryOwner, repositoryName);
@@ -562,7 +563,7 @@ function run() {
             else {
                 writeDebug(`Found artifact at ${artifact.url}`);
                 writeDebug(`Downloading artifact from ${artifact.archive_download_url}`);
-                yield downloadFile(githubClient, artifact, downloadPath, workflowName);
+                yield downloadFile(githubClient, artifact, downloadPath, downloadFilename);
             }
         }
         catch (error) {
@@ -573,18 +574,17 @@ function run() {
     });
 }
 run();
-function downloadFile(client, forArtifact, toDirectory, workflowName) {
+function downloadFile(client, forArtifact, toDirectory, toFilename) {
     return __awaiter(this, void 0, void 0, function* () {
         if (forArtifact === null) {
             core.setFailed('downloadFile was passed a null artifact');
             throw new Error('downloadFile was passed a null artifact');
         }
-        if (!workflowName || workflowName === null || workflowName === '') {
+        if (!toFilename || toFilename === null || toFilename === '') {
             core.setFailed('downloadFile was passed a null workflowName');
             throw new Error('downloadFile was passed a null workflowName');
         }
-        // const toFilePath = path.join(toDirectory, `${workflowName}.zip`)
-        const toFilePath = path_1.default.join(toDirectory, `temp.zip`);
+        const toFilePath = path_1.default.join(toDirectory, `${toFilename}`);
         writeDebug(`downloadFile(): Downloading ${forArtifact.archive_download_url} to ${toDirectory} as ${toFilePath}`);
         if (!fs.existsSync(toDirectory)) {
             fs.mkdirSync(toDirectory);
