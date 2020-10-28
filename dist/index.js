@@ -516,6 +516,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(186));
 const axios_1 = __importDefault(__webpack_require__(545));
+const path_1 = __importDefault(__webpack_require__(622));
+const fs = __importStar(__webpack_require__(747));
 function writeDebug(message) {
     // Console.debug(message)
     core.debug(message);
@@ -560,7 +562,7 @@ function run() {
             else {
                 writeDebug(`Found artifact at ${artifact.url}`);
                 writeDebug(`Downloading artifact from ${artifact.archive_download_url}`);
-                yield downloadFile(githubClient, artifact, downloadPath);
+                yield downloadFile(githubClient, artifact, downloadPath, workflowName);
             }
         }
         catch (error) {
@@ -571,13 +573,36 @@ function run() {
     });
 }
 run();
-function downloadFile(client, forArtifact, toDirectory) {
+function downloadFile(client, forArtifact, toDirectory, workflowName) {
     return __awaiter(this, void 0, void 0, function* () {
         if (forArtifact === null) {
             core.setFailed('downloadFile was passed a null artifact');
             throw new Error('downloadFile was passed a null artifact');
         }
-        writeDebug(`downloadFile(): Downloading ${forArtifact.archive_download_url} to ${toDirectory}...`);
+        if (!workflowName || workflowName === null || workflowName === '') {
+            core.setFailed('downloadFile was passed a null workflowName');
+            throw new Error('downloadFile was passed a null workflowName');
+        }
+        // const toFilePath = path.join(toDirectory, `${workflowName}.zip`)
+        const toFilePath = path_1.default.join(toDirectory, `temp.zip`);
+        writeDebug(`downloadFile(): Downloading ${forArtifact.archive_download_url} to ${toDirectory} as ${toFilePath}`);
+        if (!fs.existsSync(toDirectory)) {
+            fs.mkdirSync(toDirectory);
+        }
+        try {
+            const writer = fs.createWriteStream(toFilePath);
+            const response = yield client.get(forArtifact.archive_download_url, {
+                responseType: 'stream'
+            });
+            response.data.pipe(writer);
+            return new Promise((resolve, reject) => {
+                writer.on('finish', resolve);
+                writer.on('error', reject);
+            });
+        }
+        catch (err) {
+            core.setFailed(err);
+        }
     });
 }
 function getArtifactForWorkflowRun(client, forWorkflowRun) {
@@ -665,17 +690,22 @@ function getClient(token, repositoryOwner, repositoryName) {
             Accept: 'application/vnd.github.v3+json'
         }
     });
+    /*
     githubClient.interceptors.request.use(x => {
-        writeDebug('axios request log...');
-        writeDebug(JSON.stringify(x));
-        return x;
-    });
+      writeDebug('axios request log...')
+      writeDebug(JSON.stringify(x))
+      return x
+    })
+  
     githubClient.interceptors.response.use(x => {
-        writeDebug('axios response log...');
-        const msg = `${x.status} | ${JSON.stringify(x.data)}`;
-        writeDebug(msg);
-        return x;
-    });
+      writeDebug('axios response log...')
+  
+      const msg = `${x.status} | ${JSON.stringify(x.data)}`
+  
+      writeDebug(msg)
+      return x
+    })
+    */
     return githubClient;
 }
 

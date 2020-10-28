@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
 import axios, {AxiosInstance} from 'axios'
+import path from 'path'
 import {Artifact} from './Artifact'
 // import * as Console from 'console'
 import {ArtifactsResponse} from './ArtifactsResponse'
@@ -7,6 +8,7 @@ import {Workflow} from './Workflow'
 import {WorkflowResponse} from './WorkflowResponse'
 import {WorkflowRun} from './WorkflowRun'
 import {WorkflowRunsResponse} from './WorkflowRunsResponse'
+import * as fs from 'fs'
 
 function writeDebug(message: string): void {
   // Console.debug(message)
@@ -64,7 +66,7 @@ async function run(): Promise<void> {
       writeDebug(`Found artifact at ${artifact.url}`)
       writeDebug(`Downloading artifact from ${artifact.archive_download_url}`)
 
-      await downloadFile(githubClient, artifact, downloadPath)
+      await downloadFile(githubClient, artifact, downloadPath, workflowName)
     }
   } catch (error) {
     core.error('boom?')
@@ -78,16 +80,45 @@ run()
 async function downloadFile(
   client: AxiosInstance,
   forArtifact: Artifact,
-  toDirectory: string
+  toDirectory: string,
+  workflowName: string
 ): Promise<void> {
   if (forArtifact === null) {
     core.setFailed('downloadFile was passed a null artifact')
     throw new Error('downloadFile was passed a null artifact')
   }
 
+  if (!workflowName || workflowName === null || workflowName === '') {
+    core.setFailed('downloadFile was passed a null workflowName')
+    throw new Error('downloadFile was passed a null workflowName')
+  }
+
+  // const toFilePath = path.join(toDirectory, `${workflowName}.zip`)
+  const toFilePath = path.join(toDirectory, `temp.zip`)
+
   writeDebug(
-    `downloadFile(): Downloading ${forArtifact.archive_download_url} to ${toDirectory}...`
+    `downloadFile(): Downloading ${forArtifact.archive_download_url} to ${toDirectory} as ${toFilePath}`
   )
+
+  if (!fs.existsSync(toDirectory)) {
+    fs.mkdirSync(toDirectory)
+  }
+  try {
+    const writer = fs.createWriteStream(toFilePath)
+
+    const response = await client.get(forArtifact.archive_download_url, {
+      responseType: 'stream'
+    })
+
+    response.data.pipe(writer)
+
+    return new Promise((resolve, reject) => {
+      writer.on('finish', resolve)
+      writer.on('error', reject)
+    })
+  } catch (err) {
+    core.setFailed(err)
+  }
 }
 
 async function getArtifactForWorkflowRun(
@@ -209,6 +240,7 @@ function getClient(
     }
   })
 
+  /*
   githubClient.interceptors.request.use(x => {
     writeDebug('axios request log...')
     writeDebug(JSON.stringify(x))
@@ -223,5 +255,6 @@ function getClient(
     writeDebug(msg)
     return x
   })
+  */
   return githubClient
 }
