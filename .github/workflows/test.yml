@@ -42,5 +42,10 @@ jobs:
         with:
           # token: '${{ github.token }}'
           token: '${{ env.MYGITHUBTOKEN }}'
+          repository_owner: 'benday'
+          repository_name: 'actionsdemo'
+          workflow_name: '.NET Core 2'
+          branch_name: 'master'
+          
 
         
