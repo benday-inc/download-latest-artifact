@@ -46,7 +46,7 @@ jobs:
           repository_name: 'actionsdemo'
           workflow_name: '.NET Core 2'
           branch_name: 'master'
-          download_path: '~/temp/actionsdemo.zip'
+          download_path: '~/temp'
           download_filename: 'actionsdemo.zip'
           
 
