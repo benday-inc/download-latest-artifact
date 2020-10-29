@@ -46,7 +46,7 @@ jobs:
           repository_name: 'actionsdemo'
           workflow_name: '.NET Core 2'
           branch_name: 'master'
-          download_path: '${{env.RUNNER_TEMP}}'
+          download_path: '${{ github.workspace }}/temp'
           download_filename: 'actionsdemo.zip'
           
 
