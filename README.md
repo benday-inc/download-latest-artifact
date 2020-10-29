@@ -1,19 +1,26 @@
-![build-test](https://github.com/benday/action-edit-dbconnstr-in-appsettings/workflows/build-test/badge.svg)
+![build-test](https://github.com/benday/action-download-latest-artifact/workflows/build-test/badge.svg)
 
-# Edit a .net core connection string in appsettings.json
+# Download an artifact from a github workflow
 
-This action helps you to edit the connection strings in your appsettings.json file. 
+This action helps you to download an artifact from another github workflow.  The out-of-the-box download artifact action from github only allows you to download artifacts from a job in the current workflow.  This action gets around this restriction.  The workflow can even be hosted in another github account.  
+
+The action downloads the latest artifact from the last successful workflow run executed against the provided branch.  Failed workflow runs are ignored.  Workflow runs against branches other than the supplied branch are ignored.  
 
 ## Usage
 
-To edit a connection string inside of an appsettings.json file:  
+To download an artifact from a workflow:  
 ```yaml
-- name: edit connection string
-  uses: benday/action-edit-dbconnstr-in-appsettings@main
+- name: download workflow artifact
+  uses: benday/action-download-latest-artifact@main
   with:
-    pathtosettingsfile: '${{ github.workspace }}/Benday.Demo123/src/Benday.Demo123.WebUi/appsettings.json'
-    name: "default"
-    connectionstring: "Server=(local); Database=demo123; Trusted_Connection=True;"
+	token: ${{ secrets.TOKEN_WITH_PERMISSIONS }}'
+  	repository_owner: 'benday'
+  	repository_name: 'actionsdemo'
+  	workflow_name: 'my-workflow'
+  	branch_name: 'master'
+  	download_path: '${{ github.workspace }}/temp'
+  	download_filename: 'actionsdemo-artifact.zip'
+
 ```
 
 ----
@@ -23,9 +30,13 @@ To edit a connection string inside of an appsettings.json file:
 - None
 
 ### Inputs
-- `pathtosettingsfile` - Path to the appsettings.json file
-- `name` - Name of the connection string
-- `connectionstring` - Value for the connection string
+- `token` - github token for the target repository
+- `repository_owner` - name of the repository account owner
+- `repository_name` - name of the repository
+- `workflow_name` - name of the workflow that created the artifact
+- `branch_name` - name of the branch that the workflow should run off of
+- `download_path` - location on the agent to download the artifact to.
+- `download_filename` - download the artifact file as this filename
 
 ### Outputs
 - None
