@@ -1,14 +1,39 @@
-name: 'Download artifact from a github build'
-description: 'Download artifact from a github build'
+name: 'Download artifact from a github workflow'
+description: 'Download artifact from a github workflow (aka. build) for a branch'
 author: 'Benjamin Day Consulting, Inc.'
 inputs:
   token:
     required: true
     description: 'token for accessing github api'
-    default: 'default'
+    default: ''
+  repository_owner:
+    required: true
+    description: 'github account owner'
+    default: ''
+  repository_name:
+    required: true
+    description: 'name of the git repository that has the artifact to download'
+    default: ''
+  workflow_name:
+    required: true
+    description: 'name of the workflow (aka. build) that created the artifact'
+    default: ''
+  branch_name:
+    required: true
+    description: 'name of the branch that workflow should have run from'
+    default: ''
+  download_path:
+    required: true
+    description: 'path on the agent to download the artifact zip to'
+    default: ''
+  download_filename:
+    required: true
+    description: 'filename for the downloaded artifact zip (suggestion: this should end with the .zip extension)'
+    default: ''
+
 runs:
   using: 'node12'
   main: 'dist/index.js'
 branding:
-  icon: 'database'
+  icon: 'hard-drive'
   color: 'blue'
