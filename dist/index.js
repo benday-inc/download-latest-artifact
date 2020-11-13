@@ -554,6 +554,9 @@ function run() {
             writeDebug('setting up api call');
             const githubClient = getClient(token, repositoryOwner, repositoryName);
             const workflow = yield getWorkflowByName(githubClient, workflowName);
+            if (!workflow || workflow === null) {
+                writeDebug('workflow instance is null');
+            }
             const latestRun = yield getLatestRunForWorkflow(githubClient, workflow, branchName);
             const artifact = yield getArtifactForWorkflowRun(githubClient, latestRun);
             writeDebug('finished calling APIs');
@@ -567,9 +570,17 @@ function run() {
             }
         }
         catch (error) {
-            core.error('boom?');
-            core.error(JSON.stringify(error));
-            core.setFailed(JSON.stringify(error));
+            if (error instanceof Error) {
+                const err = error;
+                core.error(err);
+                core.setFailed(err);
+            }
+            else {
+                core.error('boom?');
+                core.error(error);
+                core.error(JSON.stringify(error));
+                core.setFailed(JSON.stringify(error));
+            }
         }
     });
 }
@@ -633,7 +644,7 @@ function getArtifactForWorkflowRun(client, forWorkflowRun) {
 }
 function getLatestRunForWorkflow(client, forWorkflow, branchName) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (forWorkflow === null) {
+        if (!forWorkflow || forWorkflow === null) {
             core.setFailed('getLatestRunForWorkflow was passed a null workflow');
             throw new Error('getLatestRunForWorkflow was passed a null workflow');
         }
@@ -673,8 +684,14 @@ function getWorkflowByName(client, workflowName) {
         }
         else {
             const match = response.data.workflows.find(w => w.name === workflowName);
-            writeDebug(`Found workflow by name for ${workflowName}.`);
-            return match;
+            if (!match || match === null) {
+                core.setFailed(`Could not find workflow by name for ${workflowName}.`);
+                return null;
+            }
+            else {
+                writeDebug(`Found workflow by name for ${workflowName}.`);
+                return match;
+            }
         }
     });
 }

@@ -44,7 +44,7 @@ jobs:
           token: '${{ env.MYGITHUBTOKEN }}'
           repository_owner: 'benday'
           repository_name: 'actionsdemo'
-          workflow_name: '.NET Core 2'
+          workflow_name: 'build'
           branch_name: 'master'
           download_path: '${{ github.workspace }}/temp'
           download_filename: 'actionsdemo.zip'
