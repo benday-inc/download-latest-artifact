@@ -1,4 +1,4 @@
-![build-test](https://github.com/benday/action-download-latest-artifact/workflows/build-test/badge.svg)
+![build-test](https://github.com/benday-inc/download-latest-artifact/workflows/build-test/badge.svg)
 
 # Download an artifact from a github workflow
 
