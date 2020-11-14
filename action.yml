@@ -1,5 +1,5 @@
-name: 'Download artifact from a github workflow'
-description: 'Download artifact from a github workflow (aka. build) for a branch'
+name: 'Download latest artifact from a github workflow'
+description: 'Download the latest artifact from a successful github workflow (aka. build) for a given branch'
 author: 'Benjamin Day Consulting, Inc.'
 inputs:
   token:
