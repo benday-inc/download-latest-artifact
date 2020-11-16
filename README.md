@@ -11,16 +11,15 @@ The action downloads the latest artifact from the last successful workflow run e
 To download an artifact from a workflow:  
 ```yaml
 - name: download workflow artifact
-  uses: benday/action-download-latest-artifact@main
+  uses: benday-inc/download-latest-artifact@main
   with:
-	token: ${{ secrets.TOKEN_WITH_PERMISSIONS }}'
-  	repository_owner: 'benday'
-  	repository_name: 'actionsdemo'
-  	workflow_name: 'my-workflow'
-  	branch_name: 'master'
-  	download_path: '${{ github.workspace }}/temp'
-  	download_filename: 'actionsdemo-artifact.zip'
-
+     token: ${{ secrets.TOKEN_WITH_PERMISSIONS }}'
+     repository_owner: 'benday'
+     repository_name: 'actionsdemo'
+     workflow_name: 'my-workflow'
+     branch_name: 'master'
+     download_path: '${{ github.workspace }}/temp'
+     download_filename: 'actionsdemo-artifact.zip'
 ```
 
 ----
