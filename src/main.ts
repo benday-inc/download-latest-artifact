@@ -82,7 +82,7 @@ async function run(): Promise<void> {
       core.setFailed(err)
     } else {
       core.error('boom?')
-      core.error(error)
+      core.error(JSON.stringify(error))
       core.error(JSON.stringify(error))
       core.setFailed(JSON.stringify(error))
     }
@@ -141,9 +141,9 @@ async function downloadFile(
   } catch (err) {
     writeDebug('downloadFile(): encountered an error')
     writeDebug(typeof err)
-    writeDebug(err)
-    core.error(err)
-    core.setFailed(err)
+    writeDebug(JSON.stringify(err))
+    core.error(JSON.stringify(err))
+    core.setFailed(JSON.stringify(err))
   }
 }
 
