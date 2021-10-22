@@ -1,5 +1,5 @@
-import * as fs from 'fs'
 import * as core from '@actions/core'
+import * as fs from 'fs'
 
 export class JsonEditor {
   Contents: string

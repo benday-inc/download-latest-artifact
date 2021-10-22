@@ -1,14 +1,13 @@
 import * as core from '@actions/core'
+import * as fs from 'fs'
 import axios, {AxiosInstance} from 'axios'
-import path from 'path'
 import {Artifact} from './artifact'
-// import * as Console from 'console'
 import {ArtifactsResponse} from './artifacts-response'
+import path from 'path'
 import {Workflow} from './workflow'
 import {WorkflowResponse} from './workflow-response'
 import {WorkflowRun} from './workflow-run'
 import {WorkflowRunsResponse} from './workflow-runs-response'
-import * as fs from 'fs'
 
 function writeDebug(message: string): void {
   // Console.debug(message)
