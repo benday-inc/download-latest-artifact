@@ -1,4 +1,4 @@
-import {WorkflowRun} from './WorkflowRun'
+import {WorkflowRun} from './workflow-run'
 
 export interface WorkflowRunsResponse {
   total_count: number
