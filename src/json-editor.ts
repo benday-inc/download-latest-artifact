@@ -1,5 +1,5 @@
-import * as fs from 'fs'
 import * as core from '@actions/core'
+import * as fs from 'fs'
 
 export class JsonEditor {
   Contents: string
@@ -28,7 +28,7 @@ export class JsonEditor {
       this.ContentsAsJson = JSON.parse(this.Contents.replace(/^\uFEFF/, ''))
       core.debug('Json parse complete.')
     } catch (error) {
-      core.debug(error)
+      core.debug(JSON.stringify(error))
       throw error
     }
   }

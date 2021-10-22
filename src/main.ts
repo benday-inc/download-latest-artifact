@@ -1,14 +1,13 @@
 import * as core from '@actions/core'
-import axios, {AxiosInstance} from 'axios'
-import path from 'path'
-import {Artifact} from './Artifact'
-// import * as Console from 'console'
-import {ArtifactsResponse} from './ArtifactsResponse'
-import {Workflow} from './Workflow'
-import {WorkflowResponse} from './WorkflowResponse'
-import {WorkflowRun} from './WorkflowRun'
-import {WorkflowRunsResponse} from './WorkflowRunsResponse'
 import * as fs from 'fs'
+import axios, {AxiosInstance} from 'axios'
+import {Artifact} from './artifact'
+import {ArtifactsResponse} from './artifacts-response'
+import path from 'path'
+import {Workflow} from './workflow'
+import {WorkflowResponse} from './workflow-response'
+import {WorkflowRun} from './workflow-run'
+import {WorkflowRunsResponse} from './workflow-runs-response'
 
 function writeDebug(message: string): void {
   // Console.debug(message)
@@ -82,7 +81,7 @@ async function run(): Promise<void> {
       core.setFailed(err)
     } else {
       core.error('boom?')
-      core.error(error)
+      core.error(JSON.stringify(error))
       core.error(JSON.stringify(error))
       core.setFailed(JSON.stringify(error))
     }
@@ -141,9 +140,9 @@ async function downloadFile(
   } catch (err) {
     writeDebug('downloadFile(): encountered an error')
     writeDebug(typeof err)
-    writeDebug(err)
-    core.error(err)
-    core.setFailed(err)
+    writeDebug(JSON.stringify(err))
+    core.error(JSON.stringify(err))
+    core.setFailed(JSON.stringify(err))
   }
 }
 

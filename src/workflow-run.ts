@@ -1,5 +1,5 @@
-import {HeadCommit} from './HeadCommit'
-import {Repository} from './Repository'
+import {HeadCommit} from './head-commit'
+import {Repository} from './repository'
 
 export interface WorkflowRun {
   id: number

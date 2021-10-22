@@ -1,4 +1,4 @@
-import {Author} from './Author'
+import {Author} from './author'
 
 export interface HeadCommit {
   id: string

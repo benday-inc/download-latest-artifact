@@ -1,4 +1,4 @@
-import {Artifact} from './Artifact'
+import {Artifact} from './artifact'
 
 export interface ArtifactsResponse {
   total_count: number
