@@ -618,9 +618,15 @@ function downloadFile(client, forArtifact, toDirectory, toFilename) {
         }
         try {
             const writer = fs.createWriteStream(toFilePath);
+            writeDebug('downloadFile(): before call to await get');
             const response = yield client.get(forArtifact.archive_download_url, {
                 responseType: 'stream'
             });
+            writeDebug('downloadFile(): after call to await get');
+            if (response) {
+                writeDebug(response.status.toString());
+                writeDebug(response.statusText);
+            }
             response.data.pipe(writer);
             return new Promise((resolve, reject) => {
                 writer.on('finish', resolve);
@@ -628,6 +634,10 @@ function downloadFile(client, forArtifact, toDirectory, toFilename) {
             });
         }
         catch (err) {
+            writeDebug('downloadFile(): encountered an error');
+            writeDebug(typeof err);
+            writeDebug(err);
+            core.error(err);
             core.setFailed(err);
         }
     });
@@ -741,7 +751,7 @@ function getClient(token, repositoryOwner, repositoryName) {
     */
     return githubClient;
 }
-
+//# sourceMappingURL=main.js.map
 
 /***/ }),
 

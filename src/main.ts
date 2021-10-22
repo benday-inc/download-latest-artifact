@@ -119,9 +119,18 @@ async function downloadFile(
   try {
     const writer = fs.createWriteStream(toFilePath)
 
+    writeDebug('downloadFile(): before call to await get')
+
     const response = await client.get(forArtifact.archive_download_url, {
       responseType: 'stream'
     })
+
+    writeDebug('downloadFile(): after call to await get')
+
+    if (response) {
+      writeDebug(response.status.toString())
+      writeDebug(response.statusText)
+    }
 
     response.data.pipe(writer)
 
@@ -130,6 +139,10 @@ async function downloadFile(
       writer.on('error', reject)
     })
   } catch (err) {
+    writeDebug('downloadFile(): encountered an error')
+    writeDebug(typeof err)
+    writeDebug(err)
+    core.error(err)
     core.setFailed(err)
   }
 }
