@@ -6,6 +6,8 @@ This action helps you to download an artifact from another github workflow.  The
 
 The action downloads the latest artifact from the last successful workflow run executed against the provided branch.  Failed workflow runs are ignored.  Workflow runs against branches other than the supplied branch are ignored.  
 
+NOTE: if you want to download the artifact from a specific pipeline run instance (run id), use the [Download artifact from a github workflow run](https://github.com/marketplace/actions/download-artifact-from-a-github-workflow-run).
+
 ## Usage
 
 To download an artifact from a workflow:  
