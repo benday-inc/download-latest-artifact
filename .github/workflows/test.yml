@@ -27,7 +27,7 @@ jobs:
           npm install
       - name: npm run all
         env:
-          token: '${{ env.ACTIONS_RUNTIME_TOKEN }}'
+          token: '${{ secrets.PAT_WITH_GOOD_PERMISSIONS }}'
         run: |
           npm run all
   test: # make sure the action works on a clean machine without building
@@ -42,7 +42,7 @@ jobs:
       - uses: ./
         with:
           # token: '${{ github.token }}'
-          token: '${{ env.MYGITHUBTOKEN }}'
+          token: '${{ secrets.PAT_WITH_GOOD_PERMISSIONS }}'
           repository_owner: 'benday'
           repository_name: 'actionsdemo'
           workflow_name: 'build'
