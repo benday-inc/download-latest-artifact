@@ -43,7 +43,7 @@ jobs:
           repository_name: 'actionsdemo'
           workflow_name: 'build'
           branch_name: 'master'
-	  artifact_name: 'build-output'
+	        artifact_name: 'build-output'
           download_path: '${{ github.workspace }}/temp'
           download_filename: 'actionsdemo.zip'
 
