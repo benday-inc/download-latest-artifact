@@ -10,9 +10,6 @@ on: # rebuild any PRs and main branch changes
       - 'releases/*'
 env:
   ACTIONS_RUNNER_DEBUG: true
-  # MYGITHUBTOKEN: '${{ github.token }}'
-  # MYGITHUBTOKEN: '${{ secrets.GITHUB_TOKEN }}'
-  # MYGITHUBTOKEN: '${{ env.ACTIONS_RUNTIME_TOKEN }}'  
   MYGITHUBTOKEN: '${{ secrets.PAT_WITH_GOOD_PERMISSIONS }}'  
   DEBUG: 'axios'
 
@@ -41,14 +38,28 @@ jobs:
         working-directory: '${{ github.workspace }}'
       - uses: ./
         with:
-          # token: '${{ github.token }}'
           token: '${{ secrets.PAT_WITH_GOOD_PERMISSIONS }}'
           repository_owner: 'benday'
           repository_name: 'actionsdemo'
           workflow_name: 'build'
           branch_name: 'master'
+	  artifact_name: 'build-output'
           download_path: '${{ github.workspace }}/temp'
           download_filename: 'actionsdemo.zip'
+
+      - uses: ./
+        with:
+          token: '${{ secrets.PAT_WITH_GOOD_PERMISSIONS }}'
+          repository_owner: 'benday'
+          repository_name: 'actionsdemo'
+          artifact_name: 'build-output-api-project'
+          workflow_name: 'build'
+          branch_name: 'master'
+          download_path: '${{ github.workspace }}/temp'
+          download_filename: 'actionsdemo-build-output-api-project.zip'
+
+
+
   automerge:
     name: Merge pull request
     runs-on: [ubuntu-latest]

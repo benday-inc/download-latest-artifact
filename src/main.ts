@@ -42,6 +42,7 @@ async function run(): Promise<void> {
     const repositoryName = getInputValue('repository_name')
     const workflowName = getInputValue('workflow_name')
     const branchName = getInputValue('branch_name')
+    const artifactName = getInputValue('artifact_name')
     const downloadPath = getInputValue('download_path')
     const downloadFilename = getInputValue('download_filename')
     const token = getInputValue('token')
@@ -61,7 +62,11 @@ async function run(): Promise<void> {
       workflow,
       branchName
     )
-    const artifact = await getArtifactForWorkflowRun(githubClient, latestRun)
+    const artifact = await getArtifactForWorkflowRun(
+      githubClient,
+      latestRun,
+      artifactName
+    )
 
     writeDebug('finished calling APIs')
 
@@ -80,7 +85,7 @@ async function run(): Promise<void> {
       core.error(err)
       core.setFailed(err)
     } else {
-      core.error('boom?')
+      core.error('Someting went wrong.')
       core.error(JSON.stringify(error))
       core.error(JSON.stringify(error))
       core.setFailed(JSON.stringify(error))
@@ -148,7 +153,8 @@ async function downloadFile(
 
 async function getArtifactForWorkflowRun(
   client: AxiosInstance,
-  forWorkflowRun: WorkflowRun
+  forWorkflowRun: WorkflowRun,
+  artifactName: string
 ): Promise<Artifact> {
   if (forWorkflowRun === null) {
     core.setFailed('getArtifactForWorkflowRun was passed a null workflow run')
@@ -175,7 +181,22 @@ async function getArtifactForWorkflowRun(
     core.setFailed(`No artifacts for workflow run ${forWorkflowRun.id}.`)
     return null
   } else {
-    const match = response.data.artifacts[0]
+    const matches = response.data.artifacts.filter(function (item) {
+      if (item.name.toLowerCase() === artifactName.toLowerCase()) {
+        return true
+      } else {
+        return false
+      }
+    })
+
+    if (!matches || matches.length === 0) {
+      core.setFailed(
+        `No artifact named ${artifactName} found in workflow run ${forWorkflowRun.id}.`
+      )
+      return null
+    }
+
+    const match = matches[0]
 
     writeDebug(`Found workflow run artifact id ${match.id}.`)
 

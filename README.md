@@ -20,6 +20,7 @@ To download an artifact from a workflow:
      repository_name: 'actionsdemo'
      workflow_name: 'my-workflow'
      branch_name: 'master'
+     artifact_name: 'build-output'
      download_path: '${{ github.workspace }}/temp'
      download_filename: 'actionsdemo-artifact.zip'
 ```
@@ -36,6 +37,7 @@ To download an artifact from a workflow:
 - `repository_name` - name of the repository
 - `workflow_name` - name of the workflow that created the artifact
 - `branch_name` - name of the branch that the workflow should run off of
+- `artifact_name` - name of artifact to download
 - `download_path` - location on the agent to download the artifact to.
 - `download_filename` - download the artifact file as this filename
 
