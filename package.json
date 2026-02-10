@@ -28,7 +28,7 @@
     "@actions/core": "1.9.1",
     "@types/adm-zip": "0.4.34",
     "adm-zip": "0.5.9",
-    "axios": "0.24.0"
+    "axios": "1.13.5"
   },
   "devDependencies": {
     "@types/jest": "^27.5.2",
