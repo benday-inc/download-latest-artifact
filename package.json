@@ -1,6 +1,6 @@
 {
   "name": "download-latest-artifact",
-  "version": "1.1.0",
+  "version": "3.0.0",
   "private": true,
   "description": "Download the latest artifact from a successful github workflow for a given branch",
   "main": "lib/main.js",
@@ -26,28 +26,29 @@
   "author": "Benjamin Day Consulting, Inc.",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.11.1",
+    "@actions/core": "2.0.3",
     "@types/adm-zip": "^0.5.8",
     "adm-zip": "^0.5.17",
     "axios": "^1.15.2"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.14",
-    "@types/node": "^22.0.0",
-    "@typescript-eslint/eslint-plugin": "^5.62.0",
-    "@typescript-eslint/parser": "^5.62.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
     "@vercel/ncc": "^0.38.3",
-    "eslint": "^8.57.1",
-    "eslint-plugin-github": "^4.10.2",
-    "eslint-plugin-jest": "^27.9.0",
-    "eslint-plugin-prettier": "^4.2.5",
-    "jasmine-ts": "^0.4.0",
-    "jest": "^29.7.0",
-    "jest-circus": "^29.7.0",
+    "eslint": "^9.18.0",
+    "eslint-config-prettier": "^10.0.0",
+    "eslint-plugin-github": "^6.0.0",
+    "eslint-plugin-jest": "^29.0.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "globals": "^15.0.0",
+    "jest": "^30.0.0",
+    "jest-circus": "^30.0.0",
     "js-yaml": "^4.1.0",
-    "prettier": "^2.8.8",
+    "prettier": "^3.4.2",
     "ts-jest": "^29.3.2",
-    "typescript": "^4.9.5"
+    "typescript": "~5.9.2"
   },
   "overrides": {
     "undici": ">=6.24.0"

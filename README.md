@@ -2,20 +2,37 @@
 
 # Download an artifact from a github workflow
 
+Written by Benjamin Day  
+Pluralsight Author | Microsoft MVP | Scrum.org Professional Scrum Trainer  
+https://www.benday.com  
+https://www.honestcheetah.com  
+info@benday.com  
+YouTube: https://www.youtube.com/@_benday  
+
+*Got ideas for GitHub Actions you'd like to see? Found a bug? Let us know by submitting an issue https://github.com/benday-inc/download-latest-artifact/issues. Want to contribute? Submit a pull request.*
+
 This action helps you to download an artifact from another github workflow.  The out-of-the-box download artifact action from github only allows you to download artifacts from a job in the current workflow.  This action gets around this restriction.  The workflow can even be hosted in another github account.  
 
 The action downloads the latest artifact from the last successful workflow run executed against the provided branch.  Failed workflow runs are ignored.  Workflow runs against branches other than the supplied branch are ignored.  
 
 NOTE: if you want to download the artifact from a specific pipeline run instance (run id), use the [Download artifact from a github workflow run](https://github.com/marketplace/actions/download-artifact-from-a-github-workflow-run).
 
+## What's new in v3
+
+- Action now runs on **Node 24** (was Node 12). Self-hosted runners must have Node 24 available; GitHub-hosted runners are unaffected.
+- Modernized dependencies: `@actions/core` 2.x, `axios` 1.x, `jest` 30, `prettier` 3, `eslint` 9 (flat config), `@typescript-eslint` 8.
+- 0 npm vulnerabilities.
+
+**Migration:** consumers should switch from `uses: benday-inc/download-latest-artifact@v2` to `@v3`.
+
 ## Usage
 
 To download an artifact from a workflow:  
 ```yaml
 - name: download workflow artifact
-  uses: benday-inc/download-latest-artifact@main
+  uses: benday-inc/download-latest-artifact@v3
   with:
-     token: ${{ secrets.TOKEN_WITH_PERMISSIONS }}'
+     token: '${{ secrets.TOKEN_WITH_PERMISSIONS }}'
      repository_owner: 'benday'
      repository_name: 'actionsdemo'
      workflow_name: 'my-workflow'
