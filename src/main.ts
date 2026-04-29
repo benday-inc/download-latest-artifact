@@ -1,6 +1,7 @@
 import * as core from '@actions/core'
 import * as fs from 'fs'
-import axios, {AxiosInstance} from 'axios'
+import axios from 'axios'
+import type {AxiosInstance} from 'axios'
 import {Artifact} from './artifact'
 import {ArtifactsResponse} from './artifacts-response'
 import path from 'path'
