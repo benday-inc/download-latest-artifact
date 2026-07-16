@@ -282,6 +282,7 @@ function getClient(
     throw new Error('Git api token was null or empty')
   }
 
+  // eslint-disable-next-line import/no-named-as-default-member
   const githubClient = axios.create({
     baseURL: `https://api.github.com/repos/${repositoryOwner}/${repositoryName}`,
     responseType: 'json',
