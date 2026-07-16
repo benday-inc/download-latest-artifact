@@ -1,6 +1,6 @@
 {
   "name": "download-latest-artifact",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "private": true,
   "description": "Download the latest artifact from a successful github workflow for a given branch",
   "main": "lib/main.js",
