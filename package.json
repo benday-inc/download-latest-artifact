@@ -28,7 +28,7 @@
   "dependencies": {
     "@actions/core": "2.0.3",
     "@types/adm-zip": "^0.5.8",
-    "adm-zip": "^0.5.17",
+    "adm-zip": "^0.6.0",
     "axios": "^1.15.2"
   },
   "devDependencies": {
